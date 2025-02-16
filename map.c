@@ -111,9 +111,29 @@ int viewRight(int ** map, int width, int row)
     return view;
 }
 
+int colSum(int ** map, int width, int col)
+{
+    int sum = 0;
+    for (int row = 0; row < width; row++)
+    {
+        sum += map[row][col];
+    }
+    return sum;
+}
+
+int rowSum(int ** map, int width, int row)
+{
+    int sum = 0;
+    for (int col = 0; col < width; col++)
+    {
+        sum += map[row][col];
+    }
+    return sum;
+}
+
 bool isSolved(int ** map, int width, int * constraints)
 {
-    bool isSolved = true;
+    bool isSolved = isValid(map, width);
     for (int pos = 0; (pos < width) && isSolved; pos++)
     {
         isSolved = isSolved && viewUp(map, width, pos) == constraints[VIEW_UP(pos)];
@@ -170,6 +190,29 @@ void printBoard(int ** map, int width, int * constraints)
     printf("\n"); 
 }
 
+void printFixed(bool ** fixed, int width, int * constraints)
+{
+    printf("  ");
+    for (int col = 0; col < width; col++)
+        printf("%d ", constraints[VIEW_UP(col)]);
+    printf("\n");
+
+    for (int row = 0; row < width; row++)
+    {
+        printf("%d ", constraints[VIEW_LEFT(row)]);
+        for (int col = 0; col < width; col++)
+        {
+            printf("%d ", fixed[row][col]);
+        }
+        printf("%d \n", constraints[VIEW_RIGHT(row)]);
+    }
+
+    printf("  ");
+    for (int col = 0; col < width; col++)
+        printf("%d ", constraints[VIEW_DOWN(col)]);
+    printf("\n"); 
+}
+
 void printLine(void)
 {
     for (int i = 0; i < 120; i++)
@@ -197,13 +240,20 @@ void swapCols(int ** map, int width, int col1, int col2)
     }
 }
 
-int initMap(int ** map, int width)
+void initMap(int ** map, int width)
 {
     for (int row = 0; row < width; row++)
         for (int col = 0; col < width; col++)
             map[row][(col + row) % width] = col + 1;
-    return 0;
 }
+
+void initMapNum(int ** map, int width, int num)
+{
+    for (int row = 0; row < width; row++)
+        for (int col = 0; col < width; col++)
+            map[row][col] = num;
+}
+
 
 bool permute(int ** map, int width, int * constraints, int start)
 {
