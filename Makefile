@@ -14,9 +14,6 @@ test5: build
 test6: build
 	./rush-01 "3 3 2 3 1 3 3 1 5 4 5 2 4 3 4 1 2 2 2 2 3 4 1 2"
 
-# ./rush-01 "2 2 1 2 1 3 3 1 2 1 2 2"
-# ./rush-01 "4 3 2 1 1 2 2 3 4 3 2 1 1 2 2 2"
-
 fail: build
 	./rush-01 "4 3 2 1 1 2 2 3 4 3 2 1 1 2 2"
 
@@ -28,4 +25,4 @@ tcgen: tcgen.c map.c
 	./tcgen 9
 
 rand:
-	./tcgen 4 | xargs -I{} ./rush-01 {}
+	./tcgen ${WIDTH} | xargs -I{} ./rush-01 {}

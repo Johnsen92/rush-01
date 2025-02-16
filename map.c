@@ -121,7 +121,7 @@ int viewRight(int ** map, int width, int row)
 
 bool isSolved(int ** map, int width, int * constraints)
 {
-    bool isSolved = isValid(map, width);
+    bool isSolved = true;
     for (int pos = 0; (pos < width) && isSolved; pos++)
     {
         isSolved = isSolved && viewUp(map, width, pos) == constraints[VIEW_UP(pos)];

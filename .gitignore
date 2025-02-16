@@ -1,3 +1,5 @@
 main.cc
 *.exe
 .vscode
+rush-01
+tcgen
