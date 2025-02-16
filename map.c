@@ -1,8 +1,17 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "map.h"
+
+int factorial(int n)
+{
+    int f = 1;
+    for (int i = 1; i <= n; i++)
+        f *= n;
+    return n;
+}
 
 int compare(void const* a, void const* b)
 {
@@ -137,14 +146,16 @@ void printMap(int ** map, int width)
 
 void printConstraints(int * constraints, int width)
 {
-    for (int i = 0; i < width*4; i++)
+    printf("\"");
+    for (int i = 0; i < (width*4) - 1; i++)
     {
         printf("%d ", constraints[i]);
     }
-    printf("\n");
+    printf("%d", constraints[(width*4) - 1]);
+    printf("\"\n");
 }
 
-void printBoard(int ** map, int * constraints, int width)
+void printBoard(int ** map, int width, int * constraints)
 {
     printf("  ");
     for (int col = 0; col < width; col++)
@@ -167,6 +178,13 @@ void printBoard(int ** map, int * constraints, int width)
     printf("\n"); 
 }
 
+void printLine(void)
+{
+    for (int i = 0; i < 120; i++)
+        printf("-");
+    printf("\n");
+}
+
 void swapRows(int ** map, int width, int row1, int row2)
 {
     for (int col = 0; col < width; col++)
@@ -187,36 +205,46 @@ void swapCols(int ** map, int width, int col1, int col2)
     }
 }
 
-void rotateRowsLeft(int ** map, int width, int start)
-{
-    for (int row = 0; row < width; row++)
-    {
-        int temp = map[row][start];
-        for (int col = start; col < width - 1; col++)
-        {
-            map[row][col] = map[row][col + 1];
-        }
-        map[row][width - 1] = temp;
-    }
-}
-
-void rotateColsLeft(int ** map, int width, int start)
-{
-    for (int col = start; col < width; col++)
-    {
-        int temp = map[start][col];
-        for (int row = 0; row < width - 1; row++)
-        {
-            map[row][col] = map[row + 1][col];
-        }
-        map[width - 1][col] = temp;
-    }
-}
-
 int initMap(int ** map, int width)
 {
     for (int row = 0; row < width; row++)
         for (int col = 0; col < width; col++)
             map[row][(col + row) % width] = col + 1;
     return 0;
+}
+
+bool permute(int ** map, int width, int * constraints, int start)
+{
+    if (start == width)
+        return false;
+
+    bool solved = isSolved(map, width, constraints); 
+
+    for(int i = start; (i < width) && !solved; i++)
+    {
+        swapRows(map, width, start, i);
+        solved = permuteCols(map, width, constraints, 0);
+        if (!solved)
+            solved = permute(map, width, constraints, start + 1);
+        if (!solved)
+            swapRows(map, width, start, i);
+    }
+    return solved;
+}
+
+bool permuteCols(int ** map, int width, int * constraints, int start)
+{
+    if (start == width)
+        return false;
+
+    bool solved = isSolved(map, width, constraints); 
+
+    for(int i = start; (i < width) && !solved; i++)
+    {
+        swapCols(map, width, start, i);
+        solved = permuteCols(map, width, constraints, start + 1);
+        if (!solved)
+            swapCols(map, width, start, i);
+    }
+    return solved;
 }

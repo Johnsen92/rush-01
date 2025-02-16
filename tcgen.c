@@ -40,6 +40,7 @@ static void deriveConstraints(int ** map, int width, int * constraints)
 
 int main(int argc, char ** argv)
 {
+    srand(time(NULL));
     assert(argc == 2);
     int width = strtol(argv[1], NULL, 10);
     int ** map = (int **) malloc(width * sizeof(int*));
@@ -57,7 +58,6 @@ int main(int argc, char ** argv)
     }
     assert(isValid(map, width));
 
-    printMap(map, width);
     deriveConstraints(map, width, constraints);
     printConstraints(constraints, width);
 }
