@@ -5,14 +5,6 @@
 
 #include "map.h"
 
-int factorial(int n)
-{
-    int f = 1;
-    for (int i = 1; i <= n; i++)
-        f *= n;
-    return n;
-}
-
 int compare(void const* a, void const* b)
 {
     return *(int *)a > *(int *)b;
