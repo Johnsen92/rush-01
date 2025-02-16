@@ -21,6 +21,7 @@ int main(int argc, char **argv)
     printf("Args: %d\n", argCount);
     printf("Width: %d\n", width);
 
+    /* Allocate memory for constraints and map */
     int * constraints = (int *) malloc(argCount * sizeof(int));
     int ** map = (int **) malloc(width * sizeof(int*));
     for (int i = 0; i < width; i++)
@@ -43,8 +44,15 @@ int main(int argc, char **argv)
     /* Assert that calculated number of constraints is equal to the number of parsed tokens */
     assert(i == argCount);
     
+    /* Initialize map with valid data */
     initMap(map, width);
+
+    /* Solve the map and assert that it has been solved */
     assert(permute(map, width, constraints, 0));
+
+    /* Assert that the solution is valid (not really necessary) */
     assert(isValid(map, width));
+
+    /* Print the final state of the solved map */
     printBoard(map, width, constraints);
 }
