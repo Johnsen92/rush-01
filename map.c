@@ -112,7 +112,7 @@ int viewRight(int ** map, int width, int row)
 
 bool isSolved(int ** map, int width, int * constraints)
 {
-    bool isSolved = true;
+    bool isSolved = isValid(map, width);
     for (int pos = 0; (pos < width) && isSolved; pos++)
     {
         isSolved = isSolved && viewUp(map, width, pos) == constraints[VIEW_UP(pos)];
@@ -120,10 +120,10 @@ bool isSolved(int ** map, int width, int * constraints)
         isSolved = isSolved && viewLeft(map, width, pos) == constraints[VIEW_LEFT(pos)];
         isSolved = isSolved && viewRight(map, width, pos) == constraints[VIEW_RIGHT(pos)];
     }
-    return true;
+    return isSolved;
 }
 
-bool printMap(int ** map, int width)
+void printMap(int ** map, int width)
 {
     for (int row = 0; row < width; row++)
     {
@@ -133,7 +133,38 @@ bool printMap(int ** map, int width)
         }
         printf("\n");
     }
-    return true;
+}
+
+void printConstraints(int * constraints, int width)
+{
+    for (int i = 0; i < width*4; i++)
+    {
+        printf("%d ", constraints[i]);
+    }
+    printf("\n");
+}
+
+void printBoard(int ** map, int * constraints, int width)
+{
+    printf("  ");
+    for (int col = 0; col < width; col++)
+        printf("%d ", constraints[VIEW_UP(col)]);
+    printf("\n");
+
+    for (int row = 0; row < width; row++)
+    {
+        printf("%d ", constraints[VIEW_LEFT(row)]);
+        for (int col = 0; col < width; col++)
+        {
+            printf("%d ", map[row][col]);
+        }
+        printf("%d \n", constraints[VIEW_RIGHT(row)]);
+    }
+
+    printf("  ");
+    for (int col = 0; col < width; col++)
+        printf("%d ", constraints[VIEW_DOWN(col)]);
+    printf("\n"); 
 }
 
 void swapRows(int ** map, int width, int row1, int row2)
