@@ -156,11 +156,7 @@ int main(int argc, char **argv)
     printLine();
 
     /* Solve the map and assert that it has been solved */
-    // assert(permute(map, width, constraints, 0));
     preSolve(map, width, constraints, fixed);
-    // printBoard(map, width, constraints);
-    // printLine();
-    // printFixed(fixed, width, constraints);
     assert(solve(map, width, constraints, fixed, 0));
 
     /* Assert that the solution is valid (not really necessary) */
